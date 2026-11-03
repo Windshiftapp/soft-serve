@@ -1,4 +1,15 @@
-# Soft Serve
+<p align="center">
+  <img src=".github/assets/windshift-logo.svg" alt="Windshift" width="112" height="112">
+</p>
+
+<h1 align="center">Soft Serve</h1>
+
+<p align="center">A tasty, self-hostable Git server for the command line. 🍦</p>
+
+<p align="center">
+    <a href="https://github.com/Windshiftapp/soft-serve/releases"><img src="https://img.shields.io/github/release/Windshiftapp/soft-serve.svg" alt="Latest Release"></a>
+    <a href="https://github.com/Windshiftapp/soft-serve/actions"><img src="https://github.com/Windshiftapp/soft-serve/workflows/build/badge.svg" alt="Build Status"></a>
+</p>
 
 > **Maintained by [Windshift](https://windshift.sh).** Soft Serve was originally
 > built by [Charm](https://charm.sh) and later
@@ -6,13 +17,6 @@
 > it alive: security fixes, dependency updates, and a web-first interface are on
 > the roadmap. The code remains MIT licensed. Thank you to Charm and to everyone
 > who contributed over the years.
-
-A tasty, self-hostable Git server for the command line. 🍦
-
-<p>
-    <a href="https://github.com/Windshiftapp/soft-serve/releases"><img src="https://img.shields.io/github/release/Windshiftapp/soft-serve.svg" alt="Latest Release"></a>
-    <a href="https://github.com/Windshiftapp/soft-serve/actions"><img src="https://github.com/Windshiftapp/soft-serve/workflows/build/badge.svg" alt="Build Status"></a>
-</p>
 
 - Easy to navigate TUI available over SSH
 - Clone repos over SSH, HTTP, or Git protocol
