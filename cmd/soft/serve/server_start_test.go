@@ -1,6 +1,7 @@
 package serve
 
 import (
+	"context"
 	"net"
 	"testing"
 	"time"
@@ -14,7 +15,7 @@ import (
 // freePort reserves a TCP port on localhost and returns its address.
 func freePort(tb testing.TB) string {
 	tb.Helper()
-	l, err := net.Listen("tcp", "127.0.0.1:0")
+	l, err := (&net.ListenConfig{}).Listen(context.Background(), "tcp", "127.0.0.1:0")
 	if err != nil {
 		tb.Fatal(err)
 	}
@@ -34,7 +35,7 @@ func TestStartSurfacesBindError(t *testing.T) {
 
 	// Occupy the SSH port so soft-serve's bind fails, same code path as
 	// EACCES on a privileged port, without needing root.
-	blocker, err := net.Listen("tcp", "127.0.0.1:0")
+	blocker, err := (&net.ListenConfig{}).Listen(context.Background(), "tcp", "127.0.0.1:0")
 	is.NoErr(err)
 	defer blocker.Close() //nolint: errcheck
 
@@ -59,7 +60,7 @@ func TestStartSurfacesBindError(t *testing.T) {
 
 	// The listeners that did bind must be shut down.
 	for _, addr := range []string{cfg.HTTP.ListenAddr, cfg.Git.ListenAddr, cfg.Stats.ListenAddr} {
-		l, err := net.Listen("tcp", addr)
+		l, err := (&net.ListenConfig{}).Listen(context.Background(), "tcp", addr)
 		is.NoErr(err) // port should be free again
 		_ = l.Close()
 	}

@@ -75,7 +75,7 @@ func collectInsecureServers(values []interface{}) []string {
 		default:
 			rv := reflect.ValueOf(val)
 			if rv.IsValid() {
-				if rv.Kind() == reflect.Ptr {
+				if rv.Kind() == reflect.Pointer {
 					rv = rv.Elem()
 				}
 				if rv.Kind() == reflect.Struct {
