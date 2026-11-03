@@ -1,28 +1,18 @@
-# Sunsetting Soft Serve
-
-To continue innovating in this space and supporting our most important work, we’ve sunset Soft Serve. The code will continue to be open source and publicly available. No further security updates will be applied. If you love this project and would like to maintain a fork, please do.
-
-Thank you to everyone who has supported and contributed to Soft Serve over the years. We appreciate you.
-
-***
-
 # Soft Serve
 
-<p>
-    <img style="width: 451px" src="https://stuff.charm.sh/soft-serve/soft-serve-header.png?0" alt="A nice rendering of some melting ice cream with the words ‘Charm Soft Serve’ next to it"><br>
-    <a href="https://github.com/charmbracelet/soft-serve/releases"><img src="https://img.shields.io/github/release/charmbracelet/soft-serve.svg" alt="Latest Release"></a>
-    <a href="https://pkg.go.dev/github.com/charmbracelet/soft-serve?tab=doc"><img src="https://godoc.org/github.com/golang/gddo?status.svg" alt="GoDoc"></a>
-    <a href="https://github.com/charmbracelet/soft-serve/actions"><img src="https://github.com/charmbracelet/soft-serve/workflows/build/badge.svg" alt="Build Status"></a>
-    <a href="https://nightly.link/charmbracelet/soft-serve/workflows/nightly/main"><img src="https://shields.io/badge/-Nightly%20Builds-orange?logo=hackthebox&logoColor=fff&style=appveyor"/></a>
-</p>
+> **Maintained by [Windshift](https://windshift.sh).** Soft Serve was originally
+> built by [Charm](https://charm.sh) and later
+> [sunset](https://github.com/charmbracelet/soft-serve). This community fork keeps
+> it alive: security fixes, dependency updates, and a web-first interface are on
+> the roadmap. The code remains MIT licensed. Thank you to Charm and to everyone
+> who contributed over the years.
 
 A tasty, self-hostable Git server for the command line. 🍦
 
-<picture>
-  <source media="(max-width: 750px)" srcset="https://github.com/charmbracelet/soft-serve/assets/42545625/c754c746-dc4c-44a6-9c39-28649264cbf2">
-  <source media="(min-width: 750px)" width="750" srcset="https://github.com/charmbracelet/soft-serve/assets/42545625/c754c746-dc4c-44a6-9c39-28649264cbf2">
-  <img src="https://github.com/charmbracelet/soft-serve/assets/42545625/c754c746-dc4c-44a6-9c39-28649264cbf2" alt="Soft Serve screencast">
-</picture>
+<p>
+    <a href="https://github.com/Windshiftapp/soft-serve/releases"><img src="https://img.shields.io/github/release/Windshiftapp/soft-serve.svg" alt="Latest Release"></a>
+    <a href="https://github.com/Windshiftapp/soft-serve/actions"><img src="https://github.com/Windshiftapp/soft-serve/workflows/build/badge.svg" alt="Build Status"></a>
+</p>
 
 - Easy to navigate TUI available over SSH
 - Clone repos over SSH, HTTP, or Git protocol
@@ -38,22 +28,33 @@ A tasty, self-hostable Git server for the command line. 🍦
   - Repos can be public or private
   - User access tokens
 
+## Status
+
+This fork is early. The immediate priorities are:
+
+- Keep the project building and patched while upstream is archived.
+- Cut regular releases from this repository.
+- Build a web-first interface on top of the existing Git engine.
+
+There is no hosted demo yet — follow the repository for updates.
+
 ## Where can I see it?
 
-Just run `ssh git.charm.sh` for an example. You can also try some of the following commands:
+The original hosted demo (`ssh git.charm.sh`) was run by Charm and is no longer
+maintained. To try Soft Serve, [run your own server](#setting-up-a-server):
 
 ```bash
+# Open the TUI
+ssh -p 23231 localhost
+
 # Jump directly to a repo in the TUI
-ssh git.charm.sh -t soft-serve
+ssh -p 23231 localhost -t soft-serve
 
 # Print out a directory tree for a repo
-ssh git.charm.sh repo tree soft-serve
-
-# Print a specific file
-ssh git.charm.sh repo blob soft-serve cmd/soft/main.go
+ssh -p 23231 localhost repo tree soft-serve
 
 # Print a file with syntax highlighting and line numbers
-ssh git.charm.sh repo blob soft-serve cmd/soft/main.go -c -l
+ssh -p 23231 localhost repo blob soft-serve cmd/soft/main.go -c -l
 ```
 
 Or you can use Soft Serve to browse local repositories using `soft browse
@@ -61,53 +62,25 @@ Or you can use Soft Serve to browse local repositories using `soft browse
 
 ## Installation
 
-Soft Serve is a single binary called `soft`. You can get it from a package
-manager:
+Soft Serve is a single binary called `soft`. Download a binary for Linux, macOS,
+or Windows from the [releases][releases] page, or build it from source:
 
 ```bash
-# macOS or Linux
-brew install charmbracelet/tap/soft-serve
-
-# Windows (with Winget)
-winget install charmbracelet.soft-serve
-
-# Arch Linux
-pacman -S soft-serve
-
-# Nix
-nix-env -iA nixpkgs.soft-serve
-
-# Debian/Ubuntu
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
-echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
-sudo apt update && sudo apt install soft-serve
-
-# Fedora/RHEL
-echo '[charm]
-name=Charm
-baseurl=https://repo.charm.sh/yum/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.charm.sh/yum/gpg.key' | sudo tee /etc/yum.repos.d/charm.repo
-sudo yum install soft-serve
+git clone https://github.com/Windshiftapp/soft-serve
+cd soft-serve
+go build -o soft ./cmd/soft
 ```
 
-You can also download a binary from the [releases][releases] page. Packages are
-available in Alpine, Debian, and RPM formats. Binaries are available for Linux,
-macOS, and Windows.
+> **Note** Package-manager entries for Soft Serve (`brew`, `winget`, `pacman`,
+> `nix`, and Charm's apt/yum repositories) still point at the original upstream
+> project and will install the archived build. We'll publish our own packages as
+> the fork stabilizes.
 
-[releases]: https://github.com/charmbracelet/soft-serve/releases
-
-Or just install it with `go`:
-
-```bash
-go install github.com/charmbracelet/soft-serve/cmd/soft@latest
-```
+[releases]: https://github.com/Windshiftapp/soft-serve/releases
 
 A [Docker image][docker] is also available.
 
-[docker]: https://github.com/charmbracelet/soft-serve/blob/main/docker.md
+[docker]: https://github.com/Windshiftapp/soft-serve/blob/main/docker.md
 
 ## Setting up a server
 
@@ -154,10 +127,9 @@ boot, not its reachability, which is still governed entirely by the
 the same data directory is a no-op if the repository already exists.
 
 Check out [Systemd][systemd] on how to run Soft Serve as a service using
-Systemd. Soft Serve packages in our Apt/Yum repositories come with Systemd
-service units.
+Systemd.
 
-[systemd]: https://github.com/charmbracelet/soft-serve/blob/main/systemd.md
+[systemd]: https://github.com/Windshiftapp/soft-serve/blob/main/systemd.md
 
 ### Server Configuration
 
@@ -653,11 +625,11 @@ Repositories can be nested too:
 
 ```sh
 # Create a new nested repository
-ssh -p 23231 localhost repo create charmbracelet/icecream
+ssh -p 23231 localhost repo create windshiftapp/icecream
 
 # Or ...
-git remote add charm ssh://localhost:23231/charmbracelet/icecream
-git push charm main
+git remote add windshift ssh://localhost:23231/windshiftapp/icecream
+git push windshift main
 ```
 
 ### Mirrors
@@ -665,7 +637,7 @@ git push charm main
 You can also *import* repositories from any public remote. Use the `repo import` command.
 
 ```sh
-ssh -p 23231 localhost repo import soft-serve https://github.com/charmbracelet/soft-serve
+ssh -p 23231 localhost repo import soft-serve https://github.com/Windshiftapp/soft-serve
 ```
 
 Use `--mirror` or `-m` to mark the repository as a *pull* mirror.
@@ -900,26 +872,23 @@ If you’re curious about the inner workings of this problem have a look at:
 
 ## Contributing
 
-See [contributing][contribute].
+Contributions are welcome — see the [contribute page][contribute] and open a
+pull request. Because this is a maintained fork of an archived project, security
+fixes and dependency updates are especially appreciated.
 
-[contribute]: https://github.com/charmbracelet/soft-serve/contribute
+[contribute]: https://github.com/Windshiftapp/soft-serve/contribute
 
 ## Feedback
 
-We’d love to hear your thoughts on this project. Feel free to drop us a note!
-
-- [Twitter](https://twitter.com/charmcli)
-- [The Fediverse](https://mastodon.social/@charmcli)
-- [Discord](https://charm.sh/chat)
+We’d love to hear your thoughts on this project. Open an issue or discussion on
+[GitHub](https://github.com/Windshiftapp/soft-serve/issues), or find us in the
+[Windshift Matrix room](https://matrix.to/#/%23windshift:matrix.org).
 
 ## License
 
-[MIT](https://github.com/charmbracelet/soft-serve/raw/main/LICENSE)
+[MIT](https://github.com/Windshiftapp/soft-serve/raw/main/LICENSE)
 
 ---
 
-Part of [Charm](https://charm.sh).
-
-<a href="https://charm.sh/"><img alt="The Charm logo" src="https://stuff.charm.sh/charm-badge.jpg" width="400"></a>
-
-Charm热爱开源 • Charm loves open source
+Soft Serve was created by [Charm](https://charm.sh) and is maintained by
+[Windshift](https://windshift.sh).
