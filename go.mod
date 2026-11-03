@@ -1,8 +1,6 @@
 module github.com/charmbracelet/soft-serve
 
-go 1.26.6
-
-toolchain go1.26.10
+go 1.27.3
 
 require (
 	charm.land/bubbles/v2 v2.1.1
@@ -22,7 +20,7 @@ require (
 	github.com/charmbracelet/x/ansi v0.11.7
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-git/go-git/v5 v5.19.2
-	github.com/go-jose/go-jose/v3 v3.0.5
+	github.com/go-jose/go-jose/v4 v4.1.8
 	github.com/gobwas/glob v0.2.3
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/go-querystring v1.2.0
