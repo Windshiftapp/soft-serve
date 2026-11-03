@@ -29,14 +29,30 @@ func UserCommand() *cobra.Command {
 	userCreateCommand := &cobra.Command{
 		Use:   "create USERNAME",
 		Short: "Create a new user",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var pubkeys []ssh.PublicKey
 			ctx := cmd.Context()
 			be := backend.FromContext(ctx)
 			username := args[0]
-			if key != "" {
-				pk, _, err := sshutils.ParseAuthorizedKey(key)
+
+			// SSH splits the remote command on whitespace and drops the
+			// client's quoting, so a key passed as `-k ssh-ed25519 AAAA...`
+			// arrives as the flag value plus trailing positional args.
+			// Reassemble the key from both so it does not have to be
+			// quoted as a single argument.
+			pubkeyStr := strings.TrimSpace(key)
+			if len(args) > 1 {
+				tail := strings.Join(args[1:], " ")
+				if pubkeyStr != "" {
+					pubkeyStr = strings.TrimSpace(pubkeyStr + " " + tail)
+				} else {
+					pubkeyStr = strings.TrimSpace(tail)
+				}
+			}
+
+			if pubkeyStr != "" {
+				pk, _, err := sshutils.ParseAuthorizedKey(pubkeyStr)
 				if err != nil {
 					return err
 				}
