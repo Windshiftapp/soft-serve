@@ -77,7 +77,13 @@ stdout user1
 usoft repo info repo1
 cmp stdout info.txt
 
-# delete
+# a read-write collaborator cannot delete the repository
+! usoft repo delete repo1
+stderr 'unauthorized'
+
+# upgrading to repo admin allows the delete
+soft repo collab remove repo1 user1
+soft repo collab add repo1 user1 admin-access
 usoft repo delete repo1
 usoft repo list
 ! stdout .
