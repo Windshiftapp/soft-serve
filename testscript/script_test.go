@@ -432,15 +432,35 @@ func cmdNewWebhook(ts *testscript.TestScript, neg bool, args []string) {
 	}
 
 	const whSite = "https://webhook.site"
-	req, err := http.NewRequest(http.MethodPost, whSite+"/token", nil) //nolint:noctx
-	check(ts, err, neg)
-
-	resp, err := http.DefaultClient.Do(req)
-	check(ts, err, neg)
-
-	defer resp.Body.Close()
+	// webhook.site is an external service and occasionally answers with an
+	// HTML error page (rate limiting or a transient outage), which is not
+	// JSON. Retry a few times so the webhook tests are not flaky.
 	var site webhookSite
-	check(ts, json.NewDecoder(resp.Body).Decode(&site), neg)
+	var err error
+	for attempt := 0; attempt < 5; attempt++ {
+		if attempt > 0 {
+			time.Sleep(time.Duration(attempt) * time.Second)
+		}
+		var req *http.Request
+		req, err = http.NewRequest(http.MethodPost, whSite+"/token", nil) //nolint:noctx
+		if err != nil {
+			continue
+		}
+		var resp *http.Response
+		resp, err = http.DefaultClient.Do(req)
+		if err != nil {
+			continue
+		}
+		err = json.NewDecoder(resp.Body).Decode(&site)
+		resp.Body.Close() //nolint:errcheck
+		if err == nil && site.UUID != "" {
+			break
+		}
+		if err == nil {
+			err = fmt.Errorf("webhook.site returned an empty token")
+		}
+	}
+	check(ts, err, neg)
 
 	ts.Setenv(args[0], whSite+"/"+site.UUID)
 }

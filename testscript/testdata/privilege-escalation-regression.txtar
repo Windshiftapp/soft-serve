@@ -100,8 +100,7 @@ stdout 'peer'
 # Webhook deliveries must be scoped to the named repository. The attacker has
 # admin access to their own repo "user1", which must not expose the webhook
 # deliveries of "shared" (these include full request URLs, headers, bodies).
-new-webhook WH_SHARED
-soft repo webhook create shared $WH_SHARED -e push
+soft repo webhook create shared https://example.com/webhook -e push
 soft repo webhook list shared
 stdout '1.*'
 ! usoft repo webhook deliveries list user1 1
